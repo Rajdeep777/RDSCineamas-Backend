@@ -27,6 +27,11 @@ class MovieModel {
   static getAll() {
     return movies;
   }
+  static add(movie) {
+    movie.id = movies.length + 1
+    movies.push(movie)
+    return movie
+  }
 }
 const movies = [
   new MovieModel(
