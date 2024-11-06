@@ -40,5 +40,28 @@ class MovieController {
       res.status(200).send(movie);
     }
   }
+  filterMovies(req, res) {
+    const minYear = req.query.minYear;
+    const maxYear = req.query.maxYear;
+    const minImdb = req.query.minImdb;
+    const maxImdb = req.query.maxImdb;
+    const minFullhdSize = req.query.minFullhdSize;
+    const maxFullhdSize = req.query.maxFullhdSize;
+    const minUltrahdSize = req.query.minUltrahdSize;
+    const maxUltrahdSize = req.query.maxUltrahdSize;
+    const category = req.query.category;
+    const result = MovieModel.filter(
+      minYear,
+      maxYear,
+      minImdb,
+      maxImdb,
+      minFullhdSize,
+      maxFullhdSize,
+      minUltrahdSize,
+      maxUltrahdSize,
+      category
+    );
+    res.status(200).send(result);
+  }
 }
 export default MovieController;
