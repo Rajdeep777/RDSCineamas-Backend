@@ -6,4 +6,5 @@ const movieRouter = express.Router();
 const movieController = new MovieController();
 // All the paths to controller methods
 movieRouter.get("/", movieController.getAllMovies);
+movieRouter.post("/", movieController.addMovie);
 export default movieRouter;
