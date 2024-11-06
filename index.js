@@ -1,11 +1,12 @@
 import express from "express";
 import movieRouter from "./src/features/movie/movie.routes.js";
-import bodyParser from "body-parser";
+import userRouter from "./src/features/user/user.routes.js";
 const server = express();
 const PORT = 8000;
-server.use(bodyParser.json());
+server.use(express.json());
 // For all requrests related to movie, redirect to movie routes
 server.use("/api/movies", movieRouter);
+server.use("/api/users", userRouter);
 server.get("/", (req, res) => {
   res.send("Welcome to RDSCinemas !!!");
 });
