@@ -24,13 +24,17 @@ class MovieModel {
     this.fullhdLink = fullhdLink;
     this.ultrahdLink = ultrahdLink;
   }
+  static get(id) {
+    const movie = movies.find((i) => i.id == id);
+    return movie;
+  }
   static getAll() {
     return movies;
   }
   static add(movie) {
-    movie.id = movies.length + 1
-    movies.push(movie)
-    return movie
+    movie.id = movies.length + 1;
+    movies.push(movie);
+    return movie;
   }
 }
 const movies = [

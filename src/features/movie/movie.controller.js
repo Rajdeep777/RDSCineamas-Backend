@@ -31,5 +31,14 @@ class MovieController {
     const createdRecord = MovieModel.add(newMovie);
     res.status(201).send(createdRecord);
   }
+  getOneMovie(req, res) {
+    const id = req.params.id;
+    const movie = MovieModel.get(id);
+    if (!movie) {
+      res.status(404).send("Movie not found");
+    } else {
+      res.status(200).send(movie);
+    }
+  }
 }
 export default MovieController;
