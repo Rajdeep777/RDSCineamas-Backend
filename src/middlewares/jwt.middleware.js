@@ -9,6 +9,7 @@ const jwtAuth = (req, res, next) => {
   // 3.Check if token is valid
   try {
     const payload = jwt.verify(token, "9MbltR1RpKRLuiqI92awST3TVoqNBzBB");
+    req.userID = payload.userID;
     console.log(payload);
     //4. return error
   } catch (error) {
