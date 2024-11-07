@@ -62,6 +62,39 @@ class MovieModel {
     });
     return result;
   }
+  static rateMovie(userID, movieID, rating) {
+    // 1. Validate user
+    const user = MovieModel.getAll().find((u) => u.id == userID);
+    if (!user) {
+      return "User not found";
+    }
+    // 2. Validate movie
+    const movie = movies.find((m) => m.id == movieID);
+    if (!movie) {
+      return "Movie not found";
+    }
+    // 3. Check if there are any rating and if not then add ratings array
+    if (!movie.ratings) {
+      movie.ratings = [];
+      movie.ratings.push({ userID: userID, rating: rating });
+    }
+    // 4. Check if user rating is already available
+    const existingRatingIndex = movie.ratings.findIndex(
+      (r) => r.userID == userID
+    );
+    if (existingRatingIndex >= 0) {
+      movie.ratings[existingRatingIndex] = {
+        userID: userID,
+        rating: rating,
+      };
+    } else {
+      // 5. If no existing rating
+      movie.ratings.push({
+        userID: userID,
+        rating: rating,
+      });
+    }
+  }
 }
 const movies = [
   new MovieModel(

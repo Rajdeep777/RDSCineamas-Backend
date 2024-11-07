@@ -63,5 +63,14 @@ class MovieController {
     );
     res.status(200).send(result);
   }
+  rateMovie(req, res) {
+    const { userID, movieID, rating } = req.query;
+    const error = MovieModel.rateMovie(userID, movieID, rating);
+    if (error) {
+      return res.status(400).send(error);
+    } else {
+      return res.status(200).send("Rating has been added");
+    }
+  }
 }
 export default MovieController;
