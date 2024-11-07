@@ -15,6 +15,12 @@ class WishlistItemsModel {
     wishlistItems.push(wishlistItem);
     return wishlistItem;
   }
+  static get(userID) {
+    return wishlistItems.filter((i) => i.userID == userID);
+  }
 }
-const wishlistItems = [new WishlistItemsModel(1, 2, 1, 1)];
+const wishlistItems = [
+  new WishlistItemsModel(2, 1, 1, 1),
+  new WishlistItemsModel(1, 1, 2, 2),
+];
 export default WishlistItemsModel;
