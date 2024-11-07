@@ -8,6 +8,7 @@ const movieController = new MovieController();
 // All the paths to controller methods
 movieRouter.get("/", movieController.getAllMovies);
 movieRouter.post("/", upload.single("imageUrl"), movieController.addMovie);
+movieRouter.post("/rate", movieController.rateMovie);
 movieRouter.get("/filter", movieController.filterMovies);
 movieRouter.get("/:id", movieController.getOneMovie);
 export default movieRouter;

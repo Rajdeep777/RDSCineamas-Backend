@@ -28,5 +28,12 @@ const users = [
     password: "Admin",
     type: "Admin",
   },
+  {
+    id: 2,
+    name: "User",
+    email: "user@gmail.com",
+    password: "User",
+    type: "User",
+  },
 ];
 export default UserModel;
