@@ -63,14 +63,15 @@ class MovieController {
     );
     res.status(200).send(result);
   }
-  rateMovie(req, res) {
-    const { userID, movieID, rating } = req.query;
+  rateMovie(req, res, next) {
     try {
+      const { userID, movieID, rating } = req.query;
       MovieModel.rateMovie(userID, movieID, rating);
+      return res.status(200).send("Rating has been added");
     } catch (err) {
-      return res.status(400).send(err.message);
+      console.log("Passing error to middleware");
+      next(err);
     }
-    return res.status(200).send("Rating has been added");
   }
 }
 export default MovieController;

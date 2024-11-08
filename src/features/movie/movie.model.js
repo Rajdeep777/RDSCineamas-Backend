@@ -1,3 +1,5 @@
+import ApplicationError from "../../../error-handler/applicationError.js";
+
 class MovieModel {
   constructor(
     id,
@@ -66,12 +68,12 @@ class MovieModel {
     // 1. Validate user
     const user = MovieModel.getAll().find((u) => u.id == userID);
     if (!user) {
-      throw new Error("User not found");
+      throw new ApplicationError("User not found", 404);
     }
     // 2. Validate movie
     const movie = movies.find((m) => m.id == movieID);
     if (!movie) {
-      throw new Error("Movie not found");
+      throw new ApplicationError("Movie not found", 400);
     }
     // 3. Check if there are any rating and if not then add ratings array
     if (!movie.ratings) {
