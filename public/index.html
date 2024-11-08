@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div class="flex justify-center">
+      <span class="text-center p-1 w-full text-3xl bg-black text-white">
+        Movies
+      </span>
+    </div>
+    <table class="table-auto w-full border-collapse border border-gray-300">
+      <thead>
+        <tr class="bg-gray-200">
+          <th class="border border-gray-300 p-2">ID</th>
+          <th class="border border-gray-300 p-2">Name</th>
+          <th class="border border-gray-300 p-2">Year</th>
+          <th class="border border-gray-300 p-2">IMDB</th>
+          <th class="border border-gray-300 p-2">Description</th>
+          <th class="border border-gray-300 p-2">Category</th>
+          <th class="border border-gray-300 p-2">Full HD Size (GB)</th>
+          <th class="border border-gray-300 p-2">Ultra HD Size (GB)</th>
+          <th class="border border-gray-300 p-2">Image</th>
+          <th class="border border-gray-300 p-2">Full HD Link</th>
+          <th class="border border-gray-300 p-2">Ultra HD Link</th>
+        </tr>
+      </thead>
+      <tbody id="movieTableBody"></tbody>
+    </table>
+    <script>
+      const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsImVtYWlsIjoidXNlckBnbWFpbC5jb20iLCJpYXQiOjE3MzEwNjM2OTcsImV4cCI6MTczMTA2NzI5N30.lGSZkwBLoVNQahn5w3FdtoZuIAjGxWX3q9UJTLIvNZk";
+      fetch("http://localhost:8000/api/movies", {
+        headers: {
+          Authorization: token,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          const tableBody = document.getElementById("movieTableBody");
+          data.forEach((item) => {
+            const row = document.createElement("tr");
+            // ID
+            const idCell = document.createElement("td");
+            idCell.textContent = item.id;
+            idCell.className = "border border-gray-300 p-2 text-center";
+            row.appendChild(idCell);
+            // Name
+            const nameCell = document.createElement("td");
+            nameCell.textContent = item.name;
+            nameCell.className = "border border-gray-300 p-2 text-center";
+            row.appendChild(nameCell);
+            // Year
+            const yearCell = document.createElement("td");
+            yearCell.textContent = item.year;
+            yearCell.className = "border border-gray-300 p-2 text-center";
+            row.appendChild(yearCell);
+            // IMDB
+            const imdbCell = document.createElement("td");
+            imdbCell.textContent = item.imdb;
+            imdbCell.className = "border border-gray-300 p-2 text-center";
+            row.appendChild(imdbCell);
+            // Description
+            const descCell = document.createElement("td");
+            descCell.textContent = item.desc;
+            descCell.className =
+              "border border-gray-300 p-2 max-w-xs text-center";
+            row.appendChild(descCell);
+            // Category
+            const categoryCell = document.createElement("td");
+            categoryCell.textContent = item.category;
+            categoryCell.className = "border border-gray-300 p-2 text-center";
+            row.appendChild(categoryCell);
+            // Full HD Size
+            const fullhdSizeCell = document.createElement("td");
+            fullhdSizeCell.textContent = item.fullhdSize;
+            fullhdSizeCell.className = "border border-gray-300 p-2 text-center";
+            row.appendChild(fullhdSizeCell);
+            // Ultra HD Size
+            const ultrahdSizeCell = document.createElement("td");
+            ultrahdSizeCell.textContent = item.ultrahdSize;
+            ultrahdSizeCell.className =
+              "border border-gray-300 p-2 text-center";
+            row.appendChild(ultrahdSizeCell);
+            // Image URL
+            const imageUrlCell = document.createElement("td");
+            const imageElement = document.createElement("img");
+            imageElement.src = item.imageUrl;
+            imageElement.alt = "Image";
+            imageElement.style.width = "150px";
+            imageElement.style.height = "212px";
+            imageUrlCell.className = "border border-gray-300 p-2 text-center";
+            imageUrlCell.appendChild(imageElement);
+            row.appendChild(imageUrlCell);
+            //Full HD Link
+            const fullhdLinkCell = document.createElement("td");
+            const fhdButtonElement = document.createElement("button");
+            fhdButtonElement.textContent = "Full HD";
+            fhdButtonElement.onclick = () => {
+              window.open(item.fullhdLink, "_blank");
+            };
+            fhdButtonElement.className =
+              "bg-blue-300 text-black px-3 py-2 rounded hover:bg-blue-400";
+            fullhdLinkCell.className = "border border-gray-300 p-2 text-center";
+            fullhdLinkCell.appendChild(fhdButtonElement);
+            row.appendChild(fullhdLinkCell);
+            // Ultra HD Link
+            const ultrahdLinkCell = document.createElement("td");
+            const uhdButtonElement = document.createElement("button");
+            uhdButtonElement.textContent = "Ultra HD";
+            uhdButtonElement.onclick = () => {
+              window.open(item.ultrahdLink, "_blank");
+            };
+            uhdButtonElement.className =
+              "bg-blue-300 text-black px-3 py-2 rounded hover:bg-blue-400";
+            ultrahdLinkCell.className =
+              "border border-gray-300 p-2 text-center";
+            ultrahdLinkCell.appendChild(uhdButtonElement);
+            row.appendChild(ultrahdLinkCell);
+            tableBody.appendChild(row);
+          });
+        })
+        .catch((error) => console.error("Error", error));
+    </script>
+  </body>
+</html>
