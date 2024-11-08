@@ -7,6 +7,17 @@ import wishlistRouter from "./src/features/wishlist/wishlistItems.routes.js";
 import apiDocs from "./swagger.json" with { type: "json" };
 const server = express();
 const PORT = 8000;
+// CORSE policy configuration
+server.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500')
+  res.header('Access-Control-Allow-Headers', '*')
+  res.header('Access-Control-Allow-Methods', '*')
+  // Return ok for preflight request
+  if (req.method == "OPTIONS") {
+    return res.sendStatus(200)
+  }
+  next()
+})
 server.use(express.json());
 // For all requrests related to movie, redirect to movie routes
 server.use("/api-docs", swagger.serve, swagger.setup(apiDocs));
@@ -15,6 +26,9 @@ server.use("/api/wishlistItems", jwtAuth, wishlistRouter);
 server.use("/api/users", userRouter);
 server.get("/", (req, res) => {
   res.send("Welcome to RDSCinemas !!!");
+});
+server.get("/client", (req, res) => {
+  res.sendFile("index.html", { root: "public" });
 });
 // Middleware to handle 404 requests
 server.use((req, res) => {
