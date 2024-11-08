@@ -6,7 +6,30 @@
     "title": "Movie API"
   },
   "host": "localhost:8000",
+  "securityDefinitions": {
+    "JWT": {
+      "in": "header",
+      "name": "Authorization",
+      "type": "apiKey"
+    }
+  },
   "paths": {
+    "/api/movies": {
+      "get": {
+        "tags": ["Movies"],
+        "summary": "Get Movies",
+        "description": "User will get all movies",
+        "security": [{ "JWT": {} }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/api/users/signin": {
       "post": {
         "tags": ["Users"],
