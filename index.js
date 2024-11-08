@@ -16,6 +16,10 @@ server.use("/api/users", userRouter);
 server.get("/", (req, res) => {
   res.send("Welcome to RDSCinemas !!!");
 });
+// Middleware to handle 404 requests
+server.use((req, res) => {
+  res.send(`API not found, Please check our documentation for more information at <a href="http://localhost:8000/api-docs">Movie API</a>`);
+})
 server.listen(PORT, () => {
   console.log("Server is running on http://localhost:8000");
 });
