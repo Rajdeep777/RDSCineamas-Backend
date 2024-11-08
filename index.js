@@ -24,6 +24,11 @@ server.use("/api/users", userRouter);
 server.get("/", (req, res) => {
   res.send("Welcome to RDSCinemas !!!");
 });
+// Error handler middleware
+server.use((err, req, res, next) => {
+  console.log(err);
+  res.status(503).send('Somthing went wrong, please try later')
+})
 server.get("/client", (req, res) => {
   res.sendFile("index.html", { root: "public" });
 });
