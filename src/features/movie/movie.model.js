@@ -66,12 +66,12 @@ class MovieModel {
     // 1. Validate user
     const user = MovieModel.getAll().find((u) => u.id == userID);
     if (!user) {
-      return "User not found";
+      throw new Error("User not found");
     }
     // 2. Validate movie
     const movie = movies.find((m) => m.id == movieID);
     if (!movie) {
-      return "Movie not found";
+      throw new Error("Movie not found");
     }
     // 3. Check if there are any rating and if not then add ratings array
     if (!movie.ratings) {
