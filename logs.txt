@@ -1,0 +1,2 @@
+{"level":"info","message":"/api/wishlistItems - {}","service":"request-logging"}
+{"level":"info","message":"/ - {}","service":"request-logging"}
