@@ -18,6 +18,16 @@ class WishlistItemsModel {
   static get(userID) {
     return wishlistItems.filter((i) => i.userID == userID);
   }
+  static delete(wishlistItemID, userID) {
+    const wishlistItemIndex = wishlistItems.findIndex(
+      (i) => (i.id == wishlistItemID && i.userID == userID)
+    );
+    if (wishlistItemIndex == -1) {
+      return "Item not found";
+    } else {
+      wishlistItems.splice(wishlistItemIndex, 1);
+    }
+  }
 }
 const wishlistItems = [
   new WishlistItemsModel(2, 1, 1, 1),

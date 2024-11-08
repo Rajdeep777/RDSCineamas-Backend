@@ -4,4 +4,5 @@ const wishlistRouter = express.Router();
 const wishlistController = new WishlistItemsController();
 wishlistRouter.post("/", wishlistController.add);
 wishlistRouter.get("/", wishlistController.get);
+wishlistRouter.delete('/:id', wishlistController.delete)
 export default wishlistRouter;

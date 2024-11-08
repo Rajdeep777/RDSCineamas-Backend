@@ -11,5 +11,14 @@ class WishlistItemsController {
     const items = WishlistItemsModel.get(userID);
     return res.status(200).send(items);
   }
+  delete(req, res) {
+    const userID = req.userID
+    const wishlistItemID = req.params.id
+    const error = WishlistItemsModel.delete(wishlistItemID, userID)
+    if (error) {
+      return res.status(404).send(error)
+    }
+    return res.status(200).send('Wishlist Item is removed')
+  }
 }
 export default WishlistItemsController;
