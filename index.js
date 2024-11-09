@@ -1,6 +1,7 @@
 import express, { application } from "express";
 import swagger, { serve } from "swagger-ui-express";
 import cors from 'cors'
+import './env.js'
 import movieRouter from "./src/features/movie/movie.routes.js";
 import userRouter from "./src/features/user/user.routes.js";
 import jwtAuth from "./src/middlewares/jwt.middleware.js";
@@ -10,6 +11,7 @@ import ApplicationError from "./error-handler/applicationError.js";
 import { connectToMongoDB } from "./config/mongodb.js";
 const server = express();
 const PORT = 8000;
+// Load all environment variables in Application
 // CORSE policy configuration using CORS library
 const corsOptions = {
   origin: 'http://localhost:5500'
