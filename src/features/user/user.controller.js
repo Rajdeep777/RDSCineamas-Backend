@@ -33,7 +33,7 @@ class UserController {
               userID: result.id,
               email: result.email,
             },
-            "9MbltR1RpKRLuiqI92awST3TVoqNBzBB",
+            process.env.JWT_SECRET,
             {
               expiresIn: "1h",
             }
