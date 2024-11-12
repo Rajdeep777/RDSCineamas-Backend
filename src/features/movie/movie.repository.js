@@ -82,10 +82,22 @@ class MovieRepository {
     try {
       const db = getDB();
       const collection = db.collection(this.collection);
-      collection.updateOne(
-        { _id: new ObjectId(movieID) },
+      // 1. Removes existing entry
+      await collection.updateOne(
         {
-          $push: { rating: { userID: new ObjectId(userID), rating } },
+          _id: new ObjectId(movieID),
+        },
+        {
+          $pull: { ratings: { userID: new ObjectId(userID) } },
+        }
+      );
+      // 2. Add new entry
+      await collection.updateOne(
+        {
+          _id: new ObjectId(movieID),
+        },
+        {
+          $push: { ratings: { userID: new ObjectId(userID), rating } },
         }
       );
     } catch (error) {
