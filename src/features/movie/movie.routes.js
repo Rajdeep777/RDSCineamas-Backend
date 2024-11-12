@@ -12,8 +12,12 @@ movieRouter.get("/", (req, res) => {
 movieRouter.post("/", upload.single("imageUrl"), (req, res) => {
   movieController.addMovie(req, res);
 });
-movieRouter.post("/rate", movieController.rateMovie);
-movieRouter.get("/filter", movieController.filterMovies);
+movieRouter.post("/rate", (req, res, next) => {
+  movieController.rateMovie(req, res, next);
+});
+movieRouter.get("/filter", (req, res) => {
+  movieController.filterMovies(req, res);
+});
 movieRouter.get("/:id", (req, res) => {
   movieController.getOneMovie(req, res);
 });
