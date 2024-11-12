@@ -9,11 +9,20 @@ class WishlistItemsRepository {
     try {
       const db = getDB();
       const collection = db.collection(this.collection);
-      await collection.insertOne({
-        movieID: new ObjectId(movieID),
-        userID: new ObjectId(userID),
-        numberOfMovies,
-      });
+      await collection.updateOne(
+        {
+          movieID: new ObjectId(movieID),
+          userID: new ObjectId(userID),
+        },
+        {
+          $inc: {
+            numberOfMovies: numberOfMovies,
+          },
+        },
+        {
+          upsert: true,
+        }
+      );
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
     }
