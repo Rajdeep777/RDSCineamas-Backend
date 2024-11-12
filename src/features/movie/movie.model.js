@@ -37,32 +37,6 @@ class MovieModel {
     movies.push(movie);
     return movie;
   }
-  static filter(
-    minYear,
-    maxYear,
-    minImdb,
-    maxImdb,
-    minFullhdSize,
-    maxFullhdSize,
-    minUltrahdSize,
-    maxUltrahdSize,
-    category
-  ) {
-    const result = movies.filter((movie) => {
-      return (
-        (!minYear || movie.year >= minYear) &&
-        (!maxYear || movie.year <= maxYear) &&
-        (!minImdb || movie.imdb >= minImdb) &&
-        (!maxImdb || movie.imdb <= maxImdb) &&
-        (!minFullhdSize || movie.fullhdSize >= minFullhdSize) &&
-        (!maxFullhdSize || movie.fullhdSize <= maxFullhdSize) &&
-        (!minUltrahdSize || movie.ultrahdSize >= minUltrahdSize) &&
-        (!maxUltrahdSize || movie.ultrahdSize <= maxUltrahdSize) &&
-        (!category || movie.category == category)
-      );
-    });
-    return result;
-  }
   static rateMovie(userID, movieID, rating) {
     // 1. Validate user
     const user = MovieModel.getAll().find((u) => u.id == userID);

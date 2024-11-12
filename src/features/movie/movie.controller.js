@@ -9,7 +9,6 @@ class MovieController {
       const movies = await this.movieRepository.getAll();
       res.status(200).send(movies);
     } catch (error) {
-      console.log(error);
       res.status(400).send("Somthing went wrong");
     }
   }
@@ -58,33 +57,34 @@ class MovieController {
       res.status(400).send("Somthing went wrong");
     }
   }
-  filterMovies(req, res) {
-    const minYear = req.query.minYear;
-    const maxYear = req.query.maxYear;
-    const minImdb = req.query.minImdb;
-    const maxImdb = req.query.maxImdb;
-    const minFullhdSize = req.query.minFullhdSize;
-    const maxFullhdSize = req.query.maxFullhdSize;
-    const minUltrahdSize = req.query.minUltrahdSize;
-    const maxUltrahdSize = req.query.maxUltrahdSize;
-    const category = req.query.category;
-    const result = MovieModel.filter(
-      minYear,
-      maxYear,
-      minImdb,
-      maxImdb,
-      minFullhdSize,
-      maxFullhdSize,
-      minUltrahdSize,
-      maxUltrahdSize,
-      category
-    );
-    res.status(200).send(result);
-  }
-  rateMovie(req, res, next) {
+  async filterMovies(req, res) {
     try {
-      const { userID, movieID, rating } = req.query;
-      MovieModel.rateMovie(userID, movieID, rating);
+      const minYear = req.query.minYear;
+      const maxYear = req.query.maxYear;
+      const minImdb = req.query.minImdb;
+      const maxImdb = req.query.maxImdb;
+      const minFullhdSize = req.query.minFullhdSize;
+      const maxFullhdSize = req.query.maxFullhdSize;
+      const category = req.query.category;
+      const result = await this.movieRepository.filter(
+        minYear,
+        maxYear,
+        minImdb,
+        maxImdb,
+        minFullhdSize,
+        maxFullhdSize,
+        category
+      );
+      res.status(200).send(result);
+    } catch (error) {
+      res.status(400).send("Somthing went wrong");
+    }
+  }
+  async rateMovie(req, res, next) {
+    try {
+      const userID = req.userID;
+      const { movieID, rating } = req.query;
+      await this.movieRepository.rate(userID, movieID, rating);
       return res.status(200).send("Rating has been added");
     } catch (err) {
       console.log("Passing error to middleware");
