@@ -1,8 +1,6 @@
 import ApplicationError from "../../../error-handler/applicationError.js";
-
 class MovieModel {
   constructor(
-    id,
     name,
     year,
     imdb,
@@ -12,9 +10,10 @@ class MovieModel {
     ultrahdSize,
     imageUrl,
     fullhdLink,
-    ultrahdLink
+    ultrahdLink,
+    id
   ) {
-    this.id = id;
+    this._id = id;
     this.name = name;
     this.year = year;
     this.imdb = imdb;

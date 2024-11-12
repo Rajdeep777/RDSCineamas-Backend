@@ -6,9 +6,15 @@ import { upload } from "../../middlewares/fileupload.middleware.js";
 const movieRouter = express.Router();
 const movieController = new MovieController();
 // All the paths to controller methods
-movieRouter.get("/", movieController.getAllMovies);
-movieRouter.post("/", upload.single("imageUrl"), movieController.addMovie);
+movieRouter.get("/", (req, res) => {
+  movieController.getAllMovies(req, res);
+});
+movieRouter.post("/", upload.single("imageUrl"), (req, res) => {
+  movieController.addMovie(req, res);
+});
 movieRouter.post("/rate", movieController.rateMovie);
 movieRouter.get("/filter", movieController.filterMovies);
-movieRouter.get("/:id", movieController.getOneMovie);
+movieRouter.get("/:id", (req, res) => {
+  movieController.getOneMovie(req, res);
+});
 export default movieRouter;
