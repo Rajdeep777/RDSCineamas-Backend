@@ -83,7 +83,7 @@ class MovieController {
   async rateMovie(req, res, next) {
     try {
       const userID = req.userID;
-      const { movieID, rating } = req.query;
+      const { movieID, rating } = req.body;
       await this.movieRepository.rate(userID, movieID, rating);
       return res.status(200).send("Rating has been added");
     } catch (err) {
