@@ -1,43 +1,61 @@
 import MovieModel from "./movie.model.js";
+import MovieRepository from "./movie.repository.js";
 class MovieController {
-  getAllMovies(req, res) {
-    const movies = MovieModel.getAll();
-    res.status(200).send(movies);
+  constructor() {
+    this.movieRepository = new MovieRepository();
   }
-  addMovie(req, res) {
-    const {
-      name,
-      year,
-      imdb,
-      desc,
-      category,
-      fullhdSize,
-      ultrahdSize,
-      fullhdLink,
-      ultrahdLink,
-    } = req.body;
-    const newMovie = {
-      name,
-      year,
-      imdb,
-      desc,
-      category,
-      fullhdSize,
-      ultrahdSize,
-      imageUrl: req.file.filename,
-      fullhdLink,
-      ultrahdLink,
-    };
-    const createdRecord = MovieModel.add(newMovie);
-    res.status(201).send(createdRecord);
+  async getAllMovies(req, res) {
+    try {
+      const movies = await this.movieRepository.getAll();
+      res.status(200).send(movies);
+    } catch (error) {
+      console.log(error);
+      res.status(400).send("Somthing went wrong");
+    }
   }
-  getOneMovie(req, res) {
-    const id = req.params.id;
-    const movie = MovieModel.get(id);
-    if (!movie) {
-      res.status(404).send("Movie not found");
-    } else {
-      res.status(200).send(movie);
+  async addMovie(req, res) {
+    try {
+      const {
+        name,
+        year,
+        imdb,
+        desc,
+        category,
+        fullhdSize,
+        ultrahdSize,
+        fullhdLink,
+        ultrahdLink,
+      } = req.body;
+      const newMovie = new MovieModel(
+        name,
+        year,
+        imdb,
+        desc,
+        category,
+        fullhdSize,
+        ultrahdSize,
+        req.file.filename,
+        fullhdLink,
+        ultrahdLink
+      );
+      console.log(newMovie);
+      const createdMovie = await this.movieRepository.add(newMovie);
+      res.status(201).send(createdMovie);
+    } catch (error) {
+      res.status(400).send("Somthing went wrong");
+    }
+  }
+  async getOneMovie(req, res) {
+    try {
+      const id = req.params.id;
+      const movie = await this.movieRepository.get(id);
+      if (!movie) {
+        res.status(404).send("Movie not found");
+      } else {
+        res.status(200).send(movie);
+      }
+    } catch (error) {
+      res.status(400).send("Somthing went wrong");
     }
   }
   filterMovies(req, res) {
