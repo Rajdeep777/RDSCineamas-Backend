@@ -9,12 +9,14 @@ class WishlistItemsRepository {
     try {
       const db = getDB();
       const collection = db.collection(this.collection);
+      const id = await this.getNextCounter(db);
       await collection.updateOne(
         {
           movieID: new ObjectId(movieID),
           userID: new ObjectId(userID),
         },
         {
+          $setOnInsert: { _id: id },
           $inc: {
             numberOfMovies: numberOfMovies,
           },
@@ -48,6 +50,17 @@ class WishlistItemsRepository {
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
     }
+  }
+  async getNextCounter(db) {
+    const resultDocument = await db
+      .collection("counters")
+      .findOneAndUpdate(
+        { _id: "wishlistItemId" },
+        { $inc: { value: 1 } },
+        { returnDocument: "after" }
+      );
+    console.log(resultDocument);
+    return resultDocument.value;
   }
 }
 export default WishlistItemsRepository;
