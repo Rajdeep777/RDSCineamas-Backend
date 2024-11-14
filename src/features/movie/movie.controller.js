@@ -62,12 +62,12 @@ class MovieController {
       const minYear = req.query.minYear;
       const minImdb = req.query.minImdb;
       const minFullhdSize = req.query.minFullhdSize;
-      const category = req.query.category;
+      const categories = req.query.category;
       const result = await this.movieRepository.filter(
         minYear,
         minImdb,
         minFullhdSize,
-        category
+        categories
       );
       res.status(200).send(result);
     } catch (error) {

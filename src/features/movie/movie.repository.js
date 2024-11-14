@@ -40,7 +40,7 @@ class MovieRepository {
     minYear,
     minImdb,
     minFullhdSize,
-    category
+    categories
   ) {
     try {
       const db = getDB();
@@ -55,9 +55,12 @@ class MovieRepository {
       if (minFullhdSize) {
         filterExpression.fullhdSize = { $gte: minFullhdSize };
       }
-      // using '$and' operator
-      if (category) {
-        filterExpression = { $or: [{ category: category }, filterExpression]}
+      // ['Action', 'Comedy', .......]
+      categories = JSON.parse(categories.replace(/'/g, '"'))
+      console.log(categories);
+      // using '$in' operator
+      if (categories) {
+        filterExpression = { $or: [{ category: { $in: categories } }, filterExpression] }
       }
       const filterMovie = await collection.find(filterExpression).toArray();
       return filterMovie;
