@@ -21,6 +21,12 @@ movieRouter.get("/filter", (req, res) => {
 movieRouter.get("/averageImdb", (req, res) => {
   movieController.averageImdb(req, res);
 });
+movieRouter.get("/averageRating", (req, res, next) => {
+  movieController.averageRating(req, res, next);
+});
+movieRouter.get("/countofRating", (req, res, next) => {
+  movieController.countOfRating(req, res, next);
+});
 movieRouter.get("/:id", (req, res) => {
   movieController.getOneMovie(req, res);
 });

@@ -120,7 +120,62 @@ class MovieRepository {
         ])
         .toArray();
     } catch (error) {
-      console.log(error);
+      throw new ApplicationError("Somthing went wrong with database", 500);
+    }
+  }
+  async averageMovieRating() {
+    try {
+      const db = getDB();
+      return await db
+        .collection(this.collection)
+        .aggregate([
+          // 1. Create documents for ratings
+          {
+            $unwind: "$ratings",
+          },
+          // 2. Group rating per movie and get average
+          {
+            $group: {
+              _id: "$name",
+              averageRating: { $avg: "$ratings.rating" },
+            },
+          },
+        ])
+        .toArray();
+    } catch (error) {
+      throw new ApplicationError("Somthing went wrong with database", 500);
+    }
+  }
+  async countOfMovieRating() {
+    try {
+      const db = getDB();
+      return await db
+        .collection(this.collection)
+        .aggregate([
+          // 1. Project name of movie and count of rating
+          {
+            $project: {
+              name: 1,
+              countOfRating: {
+                $cond: {
+                  if: { $isArray: "$ratings" },
+                  then: { $size: "$ratings" },
+                  else: 0,
+                },
+              },
+            },
+          },
+          // 2. Sort the collection
+          {
+            $sort: { countOfRating: -1 },
+          },
+          // Limit to just 1 item in result
+          {
+            $limit: 1,
+          },
+        ])
+        .toArray();
+    } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
     }
   }
