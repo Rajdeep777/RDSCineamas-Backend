@@ -146,5 +146,30 @@ class MovieRepository {
       throw new ApplicationError("Somthing went wrong with database", 500);
     }
   }
+  async countOfMovieRating() {
+    try {
+      const db = getDB();
+      return await db
+        .collection(this.collection)
+        .aggregate([
+          // 1. Project name of movie and count of rating
+          {
+            $project: {
+              name: 1,
+              countOfRating: {
+                $cond: {
+                  if: { $isArray: "$ratings" },
+                  then: { $size: "$ratings" },
+                  else: 0,
+                },
+              },
+            },
+          },
+        ])
+        .toArray();
+    } catch (error) {
+      throw new ApplicationError("Somthing went wrong with database", 500);
+    }
+  }
 }
 export default MovieRepository;

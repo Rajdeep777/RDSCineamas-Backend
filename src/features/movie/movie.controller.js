@@ -107,5 +107,13 @@ class MovieController {
       res.status(400).send("Somthing went wrong");
     }
   }
+  async countOfRating(req, res, next) {
+    try {
+      const result = await this.movieRepository.countOfMovieRating();
+      res.status(200).send(result);
+    } catch (error) {
+      res.status(400).send("Somthing went wrong");
+    }
+  }
 }
 export default MovieController;
