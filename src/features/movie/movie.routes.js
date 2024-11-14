@@ -18,6 +18,9 @@ movieRouter.post("/rate", (req, res, next) => {
 movieRouter.get("/filter", (req, res) => {
   movieController.filterMovies(req, res);
 });
+movieRouter.get("/averageImdb", (req, res) => {
+  movieController.averageImdb(req, res);
+});
 movieRouter.get("/:id", (req, res) => {
   movieController.getOneMovie(req, res);
 });

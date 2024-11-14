@@ -104,5 +104,25 @@ class MovieRepository {
       throw new ApplicationError("Somthing went wrong with database", 500);
     }
   }
+  async averageMovieImdbPerCategory() {
+    try {
+      const db = getDB();
+      return await db
+        .collection(this.collection)
+        .aggregate([
+          {
+            // 1. Get average Imdb per category
+            $group: {
+              _id: "$category",
+              averageImdb: { $avg: "$imdb" },
+            },
+          },
+        ])
+        .toArray();
+    } catch (error) {
+      console.log(error);
+      throw new ApplicationError("Somthing went wrong with database", 500);
+    }
+  }
 }
 export default MovieRepository;
