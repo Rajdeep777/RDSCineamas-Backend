@@ -6,6 +6,7 @@ export const connectToMongoDB = () => {
       client = clientInstance;
       console.log("MongoDB is connected !!!");
       createCounter(client.db());
+      createIndexes(client.db());
     })
     .catch((err) => {
       console.log(err);
@@ -23,4 +24,14 @@ const createCounter = async (db) => {
       .collection("counters")
       .insertOne({ _id: "wishlistItemId", value: 0 });
   }
+};
+const createIndexes = async (db) => {
+  try {
+    await db.collection("movies").createIndex({ imdb: 1 });
+    await db.collection("movies").createIndex({ name: 1, year: -1 });
+    await db.collection("movies").createIndex({ desc: "text" });
+  } catch (error) {
+    console.log(error);
+  }
+  console.log("Indexes are created");
 };
