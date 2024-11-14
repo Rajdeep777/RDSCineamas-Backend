@@ -36,12 +36,7 @@ class MovieRepository {
     }
   }
   // movies should have minYear, minImdb, minFullhdSize and category
-  async filter(
-    minYear,
-    minImdb,
-    minFullhdSize,
-    categories
-  ) {
+  async filter(minYear, minImdb, minFullhdSize, categories) {
     try {
       const db = getDB();
       const collection = db.collection(this.collection);
@@ -56,13 +51,18 @@ class MovieRepository {
         filterExpression.fullhdSize = { $gte: minFullhdSize };
       }
       // ['Action', 'Comedy', .......]
-      categories = JSON.parse(categories.replace(/'/g, '"'))
+      categories = JSON.parse(categories.replace(/'/g, '"'));
       console.log(categories);
       // using '$in' operator
       if (categories) {
-        filterExpression = { $or: [{ category: { $in: categories } }, filterExpression] }
+        filterExpression = {
+          $or: [{ category: { $in: categories } }, filterExpression],
+        };
       }
-      const filterMovie = await collection.find(filterExpression).toArray();
+      const filterMovie = await collection
+        .find(filterExpression)
+        .project({ name: 1, imdb: 1, _id: 0, ratings: {$slice: 1}})
+        .toArray();
       return filterMovie;
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
