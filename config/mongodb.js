@@ -33,5 +33,4 @@ const createIndexes = async (db) => {
   } catch (error) {
     console.log(error);
   }
-  console.log("Indexes are created");
 };
