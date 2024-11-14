@@ -35,42 +35,29 @@ class MovieRepository {
       throw new ApplicationError("Somthing went wrong with database", 500);
     }
   }
+  // movies should have minYear, minImdb, minFullhdSize and category
   async filter(
     minYear,
-    maxYear,
     minImdb,
-    maxImdb,
     minFullhdSize,
-    maxFullhdSize,
     category
   ) {
     try {
       const db = getDB();
       const collection = db.collection(this.collection);
-      const filterExpression = {};
+      let filterExpression = {};
       if (minYear) {
         filterExpression.year = { $gte: minYear };
-      }
-      if (maxYear) {
-        filterExpression.year = { ...filterExpression.year, $lte: maxYear };
       }
       if (minImdb) {
         filterExpression.imdb = { $gte: minImdb };
       }
-      if (maxImdb) {
-        filterExpression.imdb = { ...filterExpression.imdb, $lte: maxImdb };
-      }
       if (minFullhdSize) {
         filterExpression.fullhdSize = { $gte: minFullhdSize };
       }
-      if (maxFullhdSize) {
-        filterExpression.fullhdSize = {
-          ...filterExpression.fullhdSize,
-          $lte: maxFullhdSize,
-        };
-      }
+      // using '$and' operator
       if (category) {
-        filterExpression.category = category;
+        filterExpression = { $and: [{ category: category }, filterExpression]}
       }
       const filterMovie = await collection.find(filterExpression).toArray();
       return filterMovie;
