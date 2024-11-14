@@ -165,6 +165,14 @@ class MovieRepository {
               },
             },
           },
+          // 2. Sort the collection
+          {
+            $sort: { countOfRating: -1 },
+          },
+          // Limit to just 1 item in result
+          {
+            $limit: 1,
+          },
         ])
         .toArray();
     } catch (error) {
