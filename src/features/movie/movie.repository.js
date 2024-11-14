@@ -57,7 +57,7 @@ class MovieRepository {
       }
       // using '$and' operator
       if (category) {
-        filterExpression = { $and: [{ category: category }, filterExpression]}
+        filterExpression = { $or: [{ category: category }, filterExpression]}
       }
       const filterMovie = await collection.find(filterExpression).toArray();
       return filterMovie;
