@@ -96,7 +96,14 @@ class MovieController {
       const result = await this.movieRepository.averageMovieImdbPerCategory();
       res.status(200).send(result);
     } catch (error) {
-      console.log(error);
+      res.status(400).send("Somthing went wrong");
+    }
+  }
+  async averageRating(req, res, next) {
+    try {
+      const result = await this.movieRepository.averageMovieRating();
+      res.status(200).send(result);
+    } catch (error) {
       res.status(400).send("Somthing went wrong");
     }
   }
