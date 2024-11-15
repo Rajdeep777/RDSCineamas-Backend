@@ -10,6 +10,7 @@ import apiDocs from "./swagger.json" with { type: "json" };
 import ApplicationError from "./error-handler/applicationError.js";
 import downloaderRouter from './src/features/downloader/downloader.routes.js';
 import connectUsingMongoose from './config/mongooseConfig.js';
+import mongoose from 'mongoose';
 const server = express();
 const PORT = 8000;
 dotenv.config()
@@ -38,6 +39,9 @@ server.use((req, res) => {
 // Error handler middleware
 server.use((err, req, res, next) => {
   console.log(err);
+  if (err instanceof mongoose.Error.ValidationError) {
+    res.status(400).send(err.message)
+  }
   if (err instanceof ApplicationError) {
     res.status(err.code).send(err.message)
   }
