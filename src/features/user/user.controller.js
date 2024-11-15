@@ -48,5 +48,17 @@ class UserController {
       return res.status(500).send("Somthing went wrong");
     }
   }
+  async resetPassword(req, res, next) {
+    const { newPassword } = req.body;
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
+    const userID = req.userID;
+    try {
+      await this.userRepository.resetPassword(userID, hashedPassword);
+      res.status(200).send("Password is updated");
+    } catch (error) {
+      console.log("Passing error to middleware");
+      next(error);
+    }
+  }
 }
 export default UserController;
