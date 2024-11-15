@@ -1,14 +1,14 @@
-import { getDB } from "../../../config/mongodb.js";
+import mongoose from "mongoose";
+import userSchema from "./user.schema.js";
 import ApplicationError from "../../../error-handler/applicationError.js";
+// Creating model from schema
+const UserModel = mongoose.model("User", userSchema);
 class UserRepository {
-  async signUp(newUser) {
+  async signUp(user) {
     try {
-      // 1. Get the database
-      const db = getDB();
-      // 2. Get the collection
-      const collection = db.collection("users");
-      // 3. Insert the document
-      await collection.insertOne(newUser);
+      // Create instance of model
+      const newUser = new UserModel(user);
+      await newUser.save();
       return newUser;
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
@@ -16,24 +16,14 @@ class UserRepository {
   }
   async signIn(email, password) {
     try {
-      // 1. Get the database
-      const db = getDB();
-      // 2. Get the collection
-      const collection = db.collection("users");
-      // 3. Find the document
-      return await collection.findOne({ email, password });
+      return await UserModel.findOne({ email, password });
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
     }
   }
-  async findByEmail(email, password) {
+  async findByEmail(email) {
     try {
-      // 1. Get the database
-      const db = getDB();
-      // 2. Get the collection
-      const collection = db.collection("users");
-      // 3. Find the document
-      return await collection.findOne({ email });
+      return await UserModel.findOne({ email });
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
     }
