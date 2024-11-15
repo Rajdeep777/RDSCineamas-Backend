@@ -1,6 +1,11 @@
 import ApplicationError from "../../../error-handler/applicationError.js";
 import { getDB } from "../../../config/mongodb.js";
 import { ObjectId } from "mongodb";
+import mongoose from "mongoose";
+import movieSchema from "./movie.schema.js";
+import reviewSchema from "./review.schema.js";
+const MovieModel = mongoose.model("Movie", movieSchema);
+const ReviewModel = mongoose.model("Review", reviewSchema);
 class MovieRepository {
   constructor() {
     this.collection = "movies";
@@ -80,26 +85,28 @@ class MovieRepository {
   }
   async rate(userID, movieID, rating) {
     try {
-      const db = getDB();
-      const collection = db.collection(this.collection);
-      // 1. Removes existing entry
-      await collection.updateOne(
-        {
-          _id: new ObjectId(movieID),
-        },
-        {
-          $pull: { ratings: { userID: new ObjectId(userID) } },
+      // 1. Check if movie exists
+      const movieToUpdate = await MovieModel.findById(movieID);
+      if (!movieToUpdate) {
+        throw new Error("Movie not found");
+      } else {
+        // 2. Get the existing review
+        const userReview = await ReviewModel.findOne({
+          movie: new ObjectId(movieID),
+          user: new ObjectId(userID),
+        });
+        if (userReview) {
+          userReview.rating = rating;
+          await userReview.save();
+        } else {
+          const newReview = ReviewModel({
+            movie: new ObjectId(movieID),
+            user: new ObjectId(userID),
+            rating: rating,
+          });
+          newReview.save();
         }
-      );
-      // 2. Add new entry
-      await collection.updateOne(
-        {
-          _id: new ObjectId(movieID),
-        },
-        {
-          $push: { ratings: { userID: new ObjectId(userID), rating } },
-        }
-      );
+      }
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
     }
