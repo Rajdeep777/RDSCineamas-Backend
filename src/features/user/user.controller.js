@@ -9,7 +9,6 @@ class UserController {
   async signUp(req, res, next) {
     const { name, email, password, type } = req.body;
     try {
-      // const hashedPassword = await bcrypt.hash(password, 12);
       const user = new UserModel(name, email, password, type);
       await this.userRepository.signUp(user);
       res.status(201).send(user);
@@ -24,10 +23,9 @@ class UserController {
       if (!user) {
         return res.status(400).send("Incorrect Credentials");
       } else {
-        // 2. Compare password with hashed password
-        const result = await bcrypt.compare(req.body.password, user.password);
+        const result = req.body.password;
         if (result) {
-          // 3. Create token
+          // 2. Create token
           const token = jwt.sign(
             {
               userID: user._id,
@@ -38,7 +36,7 @@ class UserController {
               expiresIn: "1h",
             }
           );
-          // 4. Send token
+          // 3. Send token
           return res.status(200).send(token);
         } else {
           return res.status(400).send("Incorrect Credentials");
