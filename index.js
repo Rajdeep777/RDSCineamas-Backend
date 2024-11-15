@@ -9,6 +9,7 @@ import wishlistRouter from "./src/features/wishlist/wishlistItems.routes.js";
 import apiDocs from "./swagger.json" with { type: "json" };
 import ApplicationError from "./error-handler/applicationError.js";
 import { connectToMongoDB } from "./config/mongodb.js";
+import downloaderRouter from './src/features/downloader/downloader.routes.js';
 const server = express();
 const PORT = 8000;
 // CORSE policy configuration using CORS library
@@ -19,6 +20,7 @@ server.use(cors(corsOptions))
 server.use(express.json());
 // For all requrests related to movie, redirect to movie routes
 server.use("/api-docs", swagger.serve, swagger.setup(apiDocs));
+server.use('/api/downloads', jwtAuth, downloaderRouter)
 server.use("/api/movies", jwtAuth, movieRouter);
 server.use("/api/wishlistItems", jwtAuth, wishlistRouter);
 server.use("/api/users", userRouter);
