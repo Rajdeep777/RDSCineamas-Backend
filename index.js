@@ -1,4 +1,4 @@
-import './env.js'
+import dotenv from 'dotenv'
 import express, { application } from "express";
 import swagger, { serve } from "swagger-ui-express";
 import cors from 'cors'
@@ -8,10 +8,11 @@ import jwtAuth from "./src/middlewares/jwt.middleware.js";
 import wishlistRouter from "./src/features/wishlist/wishlistItems.routes.js";
 import apiDocs from "./swagger.json" with { type: "json" };
 import ApplicationError from "./error-handler/applicationError.js";
-import { connectToMongoDB } from "./config/mongodb.js";
 import downloaderRouter from './src/features/downloader/downloader.routes.js';
+import connectUsingMongoose from './config/mongooseConfig.js';
 const server = express();
 const PORT = 8000;
+dotenv.config()
 // CORSE policy configuration using CORS library
 const corsOptions = {
   origin: 'http://localhost:5500'
@@ -45,5 +46,5 @@ server.use((err, req, res, next) => {
 })
 server.listen(PORT, () => {
   console.log("Server is running on http://localhost:8000");
-  connectToMongoDB()  // Connect to MongoDB database
+  connectUsingMongoose()
 });
