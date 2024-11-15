@@ -6,15 +6,15 @@ class UserController {
   constructor() {
     this.userRepository = new UserRepository();
   }
-  async signUp(req, res) {
+  async signUp(req, res, next) {
+    const { name, email, password, type } = req.body;
     try {
-      const { name, email, password, type } = req.body;
-      const hashedPassword = await bcrypt.hash(password, 12);
-      const user = new UserModel(name, email, hashedPassword, type);
+      // const hashedPassword = await bcrypt.hash(password, 12);
+      const user = new UserModel(name, email, password, type);
       await this.userRepository.signUp(user);
       res.status(201).send(user);
     } catch (error) {
-      return res.status(500).send("Somthing went wrong");
+      next(error);
     }
   }
   async signIn(req, res) {
