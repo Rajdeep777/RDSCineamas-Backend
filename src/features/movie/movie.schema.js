@@ -15,5 +15,11 @@ const movieSchema = mongoose.Schema({
       ref: "Review",
     },
   ],
+  categories: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+    },
+  ],
 });
 export default movieSchema;
