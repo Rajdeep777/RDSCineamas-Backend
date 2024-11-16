@@ -19,7 +19,7 @@ class MovieController {
         year,
         imdb,
         desc,
-        category,
+        categories,
         fullhdSize,
         ultrahdSize,
         fullhdLink,
@@ -30,10 +30,10 @@ class MovieController {
         year,
         imdb,
         desc,
-        category,
+        categories,
         fullhdSize,
         ultrahdSize,
-        req.file.filename,
+        req?.file?.filename,
         fullhdLink,
         ultrahdLink
       );

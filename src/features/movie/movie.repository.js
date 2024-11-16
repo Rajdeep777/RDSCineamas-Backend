@@ -4,18 +4,30 @@ import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
 import movieSchema from "./movie.schema.js";
 import reviewSchema from "./review.schema.js";
+import categorySchema from "./category.schema.js";
 const MovieModel = mongoose.model("Movie", movieSchema);
 const ReviewModel = mongoose.model("Review", reviewSchema);
+const CategoryModel = mongoose.model("Category", categorySchema);
 class MovieRepository {
   constructor() {
     this.collection = "movies";
   }
-  async add(newMovie) {
+  async add(movieData) {
     try {
-      const db = getDB();
-      const collection = db.collection(this.collection);
-      await collection.insertOne(newMovie);
-      return newMovie;
+      movieData.categories = movieData.category.split(',').map(e => e.trim())
+      console.log(movieData);
+      // 1. Add the movie
+      const newMovie = new MovieModel(movieData);
+      const savedMovie = await newMovie.save();
+      // 2. Update catagories
+      await CategoryModel.updateMany(
+        {
+          _id: { $in: movieData.categories },
+        },
+        {
+          $push: { movies: new ObjectId(savedMovie._id) },
+        }
+      );
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
     }
