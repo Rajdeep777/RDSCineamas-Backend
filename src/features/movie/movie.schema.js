@@ -9,5 +9,11 @@ const movieSchema = mongoose.Schema({
   ultrahdSize: String,
   fullhdLink: String,
   ultrahdLink: String,
+  reviews: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Review",
+    },
+  ],
 });
 export default movieSchema;
