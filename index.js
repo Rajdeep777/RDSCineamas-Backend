@@ -11,6 +11,7 @@ import ApplicationError from "./error-handler/applicationError.js";
 import downloaderRouter from './src/features/downloader/downloader.routes.js';
 import connectUsingMongoose from './config/mongooseConfig.js';
 import mongoose from 'mongoose';
+import likeRouter from './src/features/like/like.routes.js';
 const server = express();
 const PORT = 8000;
 dotenv.config()
@@ -26,6 +27,7 @@ server.use('/api/downloads', jwtAuth, downloaderRouter)
 server.use("/api/movies", jwtAuth, movieRouter);
 server.use("/api/wishlistItems", jwtAuth, wishlistRouter);
 server.use("/api/users", userRouter);
+server.use('/api/likes', jwtAuth, likeRouter)
 server.get("/", (req, res) => {
   res.send("Welcome to RDSCinemas !!!");
 });

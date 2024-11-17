@@ -22,7 +22,5 @@ async function addCategories() {
       { name: "Thriller" },
     ]);
   }
-  console.log('Categories are added');
-  
 }
 export default connectUsingMongoose;
