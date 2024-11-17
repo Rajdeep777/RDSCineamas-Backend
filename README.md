@@ -30,7 +30,7 @@ This project provides APIs for **RDSCinemas**, a movie application that allows u
 
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/Rajdeep777/rdscinemas.git](https://github.com/Rajdeep777/RDSCinemas-Backend.git)
+   git clone https://github.com/Rajdeep777/RDSCinemas-Backend.git
    cd rdscinemas
    ```
 
