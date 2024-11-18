@@ -34,9 +34,7 @@ class MovieRepository {
   }
   async getAll() {
     try {
-      const db = getDB();
-      const collection = db.collection(this.collection);
-      const movies = await collection.find().toArray();
+      const movies = await MovieModel.find();
       return movies;
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
@@ -44,9 +42,7 @@ class MovieRepository {
   }
   async get(id) {
     try {
-      const db = getDB();
-      const collection = db.collection(this.collection);
-      const movie = await collection.findOne({ _id: new ObjectId(id) });
+      const movie = await MovieModel.findOne({ _id: new ObjectId(id) });
       return movie;
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
