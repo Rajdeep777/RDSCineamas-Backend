@@ -29,14 +29,14 @@ server.use("/api/wishlistItems", jwtAuth, wishlistRouter);
 server.use("/api/users", userRouter);
 server.use('/api/likes', jwtAuth, likeRouter)
 server.get("/", (req, res) => {
-  res.send("Welcome to RDSCinemas !!!");
+  res.send(`Welcome to RDSCinemas !!! <a href=${process.env.API}>Test Movie API</a>`);
 });
 server.get("/client", (req, res) => {
   res.sendFile("index.html", { root: "public" });
 });
 // Middleware to handle 404 requests
 server.use((req, res) => {
-  res.send(`API not found, Please check our documentation for more information at <a href="http://localhost:8000/api-docs">Movie API</a>`);
+  res.send(`API not found, Please check our documentation for more information at <a href=${process.env.API}>Movie API</a>`);
 })
 // Error handler middleware
 server.use((err, req, res, next) => {
