@@ -60,20 +60,14 @@ class MovieController {
   async filterMovies(req, res) {
     try {
       const minYear = req.query.minYear;
-      const maxYear = req.query.maxYear;
       const minImdb = req.query.minImdb;
-      const maxImdb = req.query.maxImdb;
       const minFullhdSize = req.query.minFullhdSize;
-      const maxFullhdSize = req.query.maxFullhdSize;
-      const category = req.query.category;
+      const categories = req.query.category;
       const result = await this.movieRepository.filter(
         minYear,
-        maxYear,
         minImdb,
-        maxImdb,
         minFullhdSize,
-        maxFullhdSize,
-        category
+        categories
       );
       res.status(200).send(result);
     } catch (error) {

@@ -48,44 +48,34 @@ class MovieRepository {
       throw new ApplicationError("Somthing went wrong with database", 500);
     }
   }
-  async filter(
-    minYear,
-    maxYear,
-    minImdb,
-    maxImdb,
-    minFullhdSize,
-    maxFullhdSize,
-    category
-  ) {
+  // movies should have minYear, minImdb, minFullhdSize and category
+  async filter(minYear, minImdb, minFullhdSize, categories) {
     try {
       const db = getDB();
       const collection = db.collection(this.collection);
-      const filterExpression = {};
+      let filterExpression = {};
       if (minYear) {
         filterExpression.year = { $gte: minYear };
-      }
-      if (maxYear) {
-        filterExpression.year = { ...filterExpression.year, $lte: maxYear };
       }
       if (minImdb) {
         filterExpression.imdb = { $gte: minImdb };
       }
-      if (maxImdb) {
-        filterExpression.imdb = { ...filterExpression.imdb, $lte: maxImdb };
-      }
       if (minFullhdSize) {
         filterExpression.fullhdSize = { $gte: minFullhdSize };
       }
-      if (maxFullhdSize) {
-        filterExpression.fullhdSize = {
-          ...filterExpression.fullhdSize,
-          $lte: maxFullhdSize,
+      // ['Action', 'Comedy', .......]
+      categories = JSON.parse(categories.replace(/'/g, '"'));
+      console.log(categories);
+      // using '$in' operator
+      if (categories) {
+        filterExpression = {
+          $or: [{ category: { $in: categories } }, filterExpression],
         };
       }
-      if (category) {
-        filterExpression.category = category;
-      }
-      const filterMovie = await collection.find(filterExpression).toArray();
+      const filterMovie = await collection
+        .find(filterExpression)
+        .project({ name: 1, imdb: 1, _id: 0, ratings: {$slice: 1}})
+        .toArray();
       return filterMovie;
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
