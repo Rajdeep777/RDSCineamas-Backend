@@ -58,8 +58,6 @@ class MovieRepository {
     category
   ) {
     try {
-      const db = getDB();
-      const collection = db.collection(this.collection);
       const filterExpression = {};
       if (minYear) {
         filterExpression.year = { $gte: minYear };
@@ -85,7 +83,7 @@ class MovieRepository {
       if (category) {
         filterExpression.category = category;
       }
-      const filterMovie = await collection.find(filterExpression).toArray();
+      const filterMovie = await MovieModel.find(filterExpression);
       return filterMovie;
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
