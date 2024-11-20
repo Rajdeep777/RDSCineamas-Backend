@@ -119,9 +119,8 @@ class MovieRepository {
   }
   async averageMovieImdbPerCategory() {
     try {
-      const db = getDB();
-      return await db
-        .collection(this.collection)
+      return await
+        MovieModel
         .aggregate([
           {
             // 1. Get average Imdb per category
@@ -131,16 +130,14 @@ class MovieRepository {
             },
           },
         ])
-        .toArray();
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
     }
   }
   async averageMovieRating() {
     try {
-      const db = getDB();
-      return await db
-        .collection(this.collection)
+      return await 
+        MovieModel
         .aggregate([
           // 1. Create documents for ratings
           {
@@ -154,16 +151,14 @@ class MovieRepository {
             },
           },
         ])
-        .toArray();
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
     }
   }
   async countOfMovieRating() {
     try {
-      const db = getDB();
-      return await db
-        .collection(this.collection)
+      return await
+        MovieModel
         .aggregate([
           // 1. Project name of movie and count of rating
           {
@@ -187,7 +182,6 @@ class MovieRepository {
             $limit: 1,
           },
         ])
-        .toArray();
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
     }
