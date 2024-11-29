@@ -36,6 +36,44 @@
         }
       }
     },
+    "/api/users/signup": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "SignUp",
+        "description": "User SignUp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User Created"
+          },
+          "500": {
+            "description": "Something went wrong with database"
+          }
+        }
+      }
+    },
     "/api/users/signin": {
       "post": {
         "tags": ["Users"],
