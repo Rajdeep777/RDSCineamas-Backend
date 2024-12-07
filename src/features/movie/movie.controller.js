@@ -12,6 +12,14 @@ class MovieController {
       res.status(400).send("Somthing went wrong");
     }
   }
+  async getAllRatings(req, res) {
+    try {
+      const ratings = await this.movieRepository.getAllRating();
+      res.status(200).send(ratings);
+    } catch (error) {
+      res.status(400).send("Somthing went wrong");
+    }
+  }
   async addMovie(req, res) {
     try {
       const {

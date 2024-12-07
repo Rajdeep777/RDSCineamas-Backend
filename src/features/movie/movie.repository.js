@@ -40,6 +40,14 @@ class MovieRepository {
       throw new ApplicationError("Somthing went wrong with database", 500);
     }
   }
+  async getAllRating() {
+    try {
+      const retings = await ReviewModel.find();
+      return retings;
+    } catch (error) {
+      throw new ApplicationError("Somthing went wrong with database", 500);
+    }
+  }
   async get(id) {
     try {
       const movie = await MovieModel.findOne({ _id: new ObjectId(id) });
