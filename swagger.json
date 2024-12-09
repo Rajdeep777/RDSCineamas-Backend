@@ -95,7 +95,6 @@
         "tags": ["Users"],
         "summary": "Get all users",
         "description": "User will get all registered users info",
-        "security": [{ "JWT": {} }],
         "responses": {
           "200": {
             "description": "OK"
