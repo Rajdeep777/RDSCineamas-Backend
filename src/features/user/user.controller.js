@@ -6,10 +6,26 @@ class UserController {
   constructor() {
     this.userRepository = new UserRepository();
   }
+  async getAllUsers(req, res) {
+    try {
+      const users = await this.userRepository.getAll();
+      res.status(200).send(users);
+    } catch (error) {
+      res.status(400).send("Somthing went wrong");
+    }
+  }
   async signUp(req, res, next) {
     const { name, email, password, type } = req.body;
+    // Password validation
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,12}$/;
+    if (!passwordPattern.test(password)) {
+      return res
+        .status(400)
+        .send("Password must be 8-12 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character");
+    }
     try {
-      const user = new UserModel(name, email, password, type);
+      const hashedPassword = await bcrypt.hash(password, 12)
+      const user = new UserModel(name, email, hashedPassword, type);
       await this.userRepository.signUp(user);
       res.status(201).send(user);
     } catch (error) {
@@ -23,7 +39,7 @@ class UserController {
       if (!user) {
         return res.status(400).send("Incorrect Credentials");
       } else {
-        const result = req.body.password;
+        const result = await bcrypt.compare(req.body.password, user.password);
         if (result) {
           // 2. Create token
           const token = jwt.sign(

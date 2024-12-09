@@ -18,6 +18,14 @@ class UserRepository {
       }
     }
   }
+  async getAll() {
+    try {
+      const users = await UserModel.find();
+      return users;
+    } catch (error) {
+      throw new ApplicationError("Somthing went wrong with database", 500);
+    }
+  }
   async signIn(email, password) {
     try {
       return await UserModel.findOne({ email, password });
