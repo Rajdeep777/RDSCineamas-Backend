@@ -15,7 +15,7 @@ class LikeController {
       } else {
         this.likeRepository.likeCategory(userId, id);
       }
-      return res.status(200).send();
+      return res.status(200).send("Like has been added");
     } catch (error) {
       res.status(400).send("Something went wrong");
     }
