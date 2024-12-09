@@ -12,13 +12,8 @@ const userSchema = mongoose.Schema({
   },
   password: {
     type: String,
-    validate: {
-      validator: function (value) {
-        return /^(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,12}$/.test(value);
-      },
-      message:
-        "Password should be at least 8-12 character and have a special character",
-    },
+    unique: true,
+    required: true
   },
   type: { type: String, enum: ["admin", "user"] },
 });
