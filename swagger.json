@@ -106,6 +106,22 @@
         }
       }
     },
+    "/api/movies/categories": {
+      "get": {
+        "tags": ["Movies"],
+        "summary": "Get Categories of Movies",
+        "description": "User will get all categories of movies",
+        "security": [{ "JWT": {} }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/api/movies/{movieId}": {
       "get": {
         "tags": ["Movies"],
