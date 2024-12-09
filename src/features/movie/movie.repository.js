@@ -118,7 +118,10 @@ class MovieRepository {
             user: new ObjectId(userID),
             rating: rating,
           });
-          newReview.save();
+          const savedReviews = await newReview.save();
+          // 3. Add the new review's ID to the movie's reviews array
+          movieToUpdate.reviews.push(savedReviews._id);
+          await movieToUpdate.save();
         }
       }
     } catch (error) {
