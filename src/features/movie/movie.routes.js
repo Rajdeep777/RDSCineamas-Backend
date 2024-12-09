@@ -12,6 +12,9 @@ movieRouter.get("/", (req, res) => {
 movieRouter.get("/ratings", (req, res) => {
   movieController.getAllRatings(req, res);
 });
+movieRouter.get("/categories", (req, res) => {
+  movieController.getAllCategories(req, res);
+});
 movieRouter.post("/", upload.single("imageUrl"), (req, res) => {
   movieController.addMovie(req, res);
 });
