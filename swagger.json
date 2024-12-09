@@ -187,6 +187,73 @@
           }
         }
       }
+    },
+    "/api/likes/add": {
+      "post": {
+        "tags": ["Likes"],
+        "summary": "Like Movies & Categories",
+        "description": "User will add likes on moives and categories by providing the 'type' as 'Movie' or 'Category' and 'id' as 'movieId' or 'categoryId'",
+        "security": [{ "JWT": {} }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Incorrect Credentials"
+          }
+        }
+      }
+    },
+    "/api/likes": {
+      "get": {
+        "tags": ["Likes"],
+        "summary": "Get likes",
+        "description": "User will retrieve likes of moives and categories by providing the 'type' as 'Movie' or 'Category' and 'id' as 'movieId' or 'categoryId' in query params",
+        "security": [{ "JWT": {} }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The type as 'Movie' or 'Category' to retrieve likes"
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The id of the 'Movie' and 'Category to retrieve likes"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Incorrect Credentials"
+          }
+        }
+      }
     }
   }
 }
