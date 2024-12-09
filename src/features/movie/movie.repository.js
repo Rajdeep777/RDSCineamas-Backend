@@ -34,19 +34,23 @@ class MovieRepository {
   }
   async getAll() {
     try {
-      const db = getDB();
-      const collection = db.collection(this.collection);
-      const movies = await collection.find().toArray();
+      const movies = await MovieModel.find();
       return movies;
+    } catch (error) {
+      throw new ApplicationError("Somthing went wrong with database", 500);
+    }
+  }
+  async getAllRating() {
+    try {
+      const retings = await ReviewModel.find();
+      return retings;
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
     }
   }
   async get(id) {
     try {
-      const db = getDB();
-      const collection = db.collection(this.collection);
-      const movie = await collection.findOne({ _id: new ObjectId(id) });
+      const movie = await MovieModel.findOne({ _id: new ObjectId(id) });
       return movie;
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
@@ -62,8 +66,6 @@ class MovieRepository {
     category
   ) {
     try {
-      const db = getDB();
-      const collection = db.collection(this.collection);
       const filterExpression = {};
       if (minYear) {
         filterExpression.year = { $gte: minYear };
@@ -89,7 +91,7 @@ class MovieRepository {
       if (category) {
         filterExpression.category = category;
       }
-      const filterMovie = await collection.find(filterExpression).toArray();
+      const filterMovie = await MovieModel.find(filterExpression);
       return filterMovie;
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
@@ -116,7 +118,10 @@ class MovieRepository {
             user: new ObjectId(userID),
             rating: rating,
           });
-          newReview.save();
+          const savedReviews = await newReview.save();
+          // 3. Add the new review's ID to the movie's reviews array
+          movieToUpdate.reviews.push(savedReviews._id);
+          await movieToUpdate.save();
         }
       }
     } catch (error) {
@@ -125,9 +130,8 @@ class MovieRepository {
   }
   async averageMovieImdbPerCategory() {
     try {
-      const db = getDB();
-      return await db
-        .collection(this.collection)
+      return await
+        MovieModel
         .aggregate([
           {
             // 1. Get average Imdb per category
@@ -137,16 +141,14 @@ class MovieRepository {
             },
           },
         ])
-        .toArray();
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
     }
   }
   async averageMovieRating() {
     try {
-      const db = getDB();
-      return await db
-        .collection(this.collection)
+      return await 
+        MovieModel
         .aggregate([
           // 1. Create documents for ratings
           {
@@ -160,16 +162,14 @@ class MovieRepository {
             },
           },
         ])
-        .toArray();
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
     }
   }
   async countOfMovieRating() {
     try {
-      const db = getDB();
-      return await db
-        .collection(this.collection)
+      return await
+        MovieModel
         .aggregate([
           // 1. Project name of movie and count of rating
           {
@@ -193,7 +193,6 @@ class MovieRepository {
             $limit: 1,
           },
         ])
-        .toArray();
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
     }

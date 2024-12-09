@@ -9,6 +9,9 @@ const movieController = new MovieController();
 movieRouter.get("/", (req, res) => {
   movieController.getAllMovies(req, res);
 });
+movieRouter.get("/ratings", (req, res) => {
+  movieController.getAllRatings(req, res);
+});
 movieRouter.post("/", upload.single("imageUrl"), (req, res) => {
   movieController.addMovie(req, res);
 });
