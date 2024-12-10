@@ -155,52 +155,28 @@ class MovieRepository {
   }
   async averageMovieRating() {
     try {
-      return await 
-        MovieModel
-        .aggregate([
-          // 1. Create documents for ratings
-          {
-            $unwind: "$ratings",
+      return await ReviewModel.aggregate([
+        {
+          $group: {
+            _id: "$movie",
+            averageRating: { $avg: "$rating" },
           },
-          // 2. Group rating per movie and get average
-          {
-            $group: {
-              _id: "$name",
-              averageRating: { $avg: "$ratings.rating" },
-            },
-          },
-        ])
+        },
+      ]);
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
     }
   }
   async countOfMovieRating() {
     try {
-      return await
-        MovieModel
-        .aggregate([
-          // 1. Project name of movie and count of rating
-          {
-            $project: {
-              name: 1,
-              countOfRating: {
-                $cond: {
-                  if: { $isArray: "$ratings" },
-                  then: { $size: "$ratings" },
-                  else: 0,
-                },
-              },
-            },
+      return await ReviewModel.aggregate([
+        {
+          $group: {
+            _id: "$movie",
+            countOfRating: { $sum: 1 },
           },
-          // 2. Sort the collection
-          {
-            $sort: { countOfRating: -1 },
-          },
-          // Limit to just 1 item in result
-          {
-            $limit: 1,
-          },
-        ])
+        },
+      ]);
     } catch (error) {
       throw new ApplicationError("Somthing went wrong with database", 500);
     }
