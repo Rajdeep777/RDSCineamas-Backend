@@ -186,6 +186,38 @@
         }
       }
     },
+    "/api/movies/averageRating": {
+      "get": {
+        "tags": ["Reviews"],
+        "summary": "Get average ratings",
+        "description": "User will get average ratings of movies",
+        "security": [{ "JWT": {} }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/movies/countofRating": {
+      "get": {
+        "tags": ["Reviews"],
+        "summary": "Get count of ratings",
+        "description": "User will get count of ratings",
+        "security": [{ "JWT": {} }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/api/movies/rate": {
       "post": {
         "tags": ["Reviews"],
