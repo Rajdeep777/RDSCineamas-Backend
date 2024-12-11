@@ -41,6 +41,7 @@ class MovieController {
         fullhdLink,
         ultrahdLink,
       } = req.body;
+      const imageUrl = req.file ? req.file.filename : null
       const newMovie = new MovieModel(
         name,
         year,
@@ -49,7 +50,7 @@ class MovieController {
         categories,
         fullhdSize,
         ultrahdSize,
-        req?.file?.filename,
+        imageUrl,
         fullhdLink,
         ultrahdLink
       );
