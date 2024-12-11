@@ -9,6 +9,7 @@ const movieSchema = mongoose.Schema({
   ultrahdSize: String,
   fullhdLink: String,
   ultrahdLink: String,
+  imageUrl: String,
   reviews: [
     {
       type: mongoose.Schema.Types.ObjectId,
