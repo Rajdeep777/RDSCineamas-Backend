@@ -28,7 +28,7 @@ class MovieController {
       res.status(400).send("Somthing went wrong");
     }
   }
-  async addMovie(req, res) {
+  async addMovie(req, res, next) {
     try {
       const {
         name,
@@ -58,7 +58,7 @@ class MovieController {
       const createdMovie = await this.movieRepository.add(newMovie);
       res.status(201).send(createdMovie);
     } catch (error) {
-      res.status(400).send("Somthing went wrong");
+      next(error)
     }
   }
   async getOneMovie(req, res) {
