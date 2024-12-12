@@ -56,7 +56,10 @@ class MovieController {
       );
       console.log(newMovie);
       const createdMovie = await this.movieRepository.add(newMovie);
-      res.status(201).send(createdMovie);
+      res.status(201).send({
+        message: "Movie has been added",
+        movie: createdMovie,
+      });
     } catch (error) {
       next(error)
     }
