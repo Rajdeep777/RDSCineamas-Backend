@@ -29,7 +29,12 @@ class MovieRepository {
         }
       );
     } catch (error) {
-      throw new ApplicationError("Somthing went wrong with database", 500);
+      if (error instanceof mongoose.Error.ValidationError) {
+        throw error;
+      }
+      else {
+        throw new ApplicationError("Somthing went wrong with database", 500);
+      }
     }
   }
   async getAll() {
