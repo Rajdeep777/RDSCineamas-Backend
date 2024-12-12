@@ -105,6 +105,74 @@
         }
       }
     },
+    "/api/movies/add": {
+      "post": {
+        "tags": ["Movies"],
+        "summary": "Add movies",
+        "description": "User will add movies",
+        "security": [{ "JWT": {} }],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the movie. Example: 'Inception'"
+                  },
+                  "year": {
+                    "type": "number",
+                    "description": "The release year of the movie. Example: 2010"
+                  },
+                  "imdb": {
+                    "type": "number",
+                    "description": "The IMDb rating of the movie on a scale of 1 to 10. Example: 8.8"
+                  },
+                  "desc": {
+                    "type": "string",
+                    "description": "A brief description of the movie. Example: 'A skilled thief is given a chance at redemption if he can successfully perform an inception.'"
+                  },
+                  "categories": {
+                    "type": "string",
+                    "description": "The categoryId of the movie which you can find on this API endpoint --- GET '/api/movies/categories'. Example: '67598d13110228df6e55a5a1' for 'Action' category"
+                  },
+                  "fullhdSize": {
+                    "type": "number",
+                    "description": "The size of the Full HD version in GB. Example: 4.5"
+                  },
+                  "ultrahdSize": {
+                    "type": "number",
+                    "description": "The size of the Ultra HD version in GB. Example: 8.2"
+                  },
+                  "fullhdLink": {
+                    "type": "string",
+                    "description": "A download link for the Full HD version of the movie."
+                  },
+                  "ultrahdLink": {
+                    "type": "string",
+                    "description": "A download link for the Ultra HD version of the movie."
+                  },
+                  "imageUrl": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The movie's poster or image file. Upload a file in PNG, JPG, or JPEG format."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Movie has been added"
+          },
+          "500": {
+            "description": "Something went wrong with database"
+          }
+        }
+      }
+    },
     "/api/movies": {
       "get": {
         "tags": ["Movies"],
